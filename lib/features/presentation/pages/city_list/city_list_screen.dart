@@ -5,7 +5,6 @@ import 'package:weather_app_flutter/core/app_theme.dart';
 import 'package:weather_app_flutter/core/consts.dart';
 import 'package:weather_app_flutter/core/getters.dart';
 import 'package:weather_app_flutter/features/presentation/widgets/wrapper_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app_flutter/configs/auto_router/router.dart';
 import 'package:weather_app_flutter/core/helper_methods.dart';
 
@@ -31,10 +30,7 @@ class _CityListScreenState extends State<CityListScreen> {
 
   Future<void> retrieveFromSharedPreferences() async {
     List<CityModel> retrievedCities = await HelperMethods().getCitiesFromSharedPreferences();
-    // citiesNotifier.value = retrievedCities;
-    setState(() {
-      citiesNotifier.value = retrievedCities;
-    });
+    citiesNotifier.value = retrievedCities;
   }
 
   @override
@@ -69,11 +65,17 @@ class _CityListScreenState extends State<CityListScreen> {
                         ),
                         WrapperButton(
                           onPressed: () async {
+                            // await HelperMethods().openModalBottomSheet(
+                            //     context,
+                            //     kazakhstanCities,
+                            //         (selectedCity) {},
+                            //     true);
                             await HelperMethods().openModalBottomSheet(
                                 context,
                                 kazakhstanCities,
                                     (selectedCity) {},
-                                true);
+                                true,
+                                retrieveFromSharedPreferences);
                           },
                           child: Container(
                             alignment: Alignment.center,

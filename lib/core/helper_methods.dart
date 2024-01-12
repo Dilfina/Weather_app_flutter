@@ -48,11 +48,67 @@ class HelperMethods {
     }).toList();
   }
 
+  // Future<CityModel?> openModalBottomSheet(
+  //     BuildContext context,
+  //     List<CityModel> cities,
+  //     void Function(CityModel) onCitySelected,
+  //     bool isDismissible) async {
+  //   return await showModalBottomSheet<CityModel>(
+  //     context: context,
+  //     isDismissible: isDismissible,
+  //     useSafeArea: true,
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.only(
+  //         topLeft: Radius.circular(12),
+  //         topRight: Radius.circular(12),
+  //       ),
+  //     ),
+  //     builder: (BuildContext context) {
+  //       return ListView.separated(
+  //         padding: const EdgeInsets.all(16),
+  //         itemCount: cities.length,
+  //         shrinkWrap: true,
+  //         physics: const BouncingScrollPhysics(),
+  //         itemBuilder: (context, index) {
+  //           return GestureDetector(
+  //             onTap: () async {
+  //               await saveCityToSharedPreferences(cities[index]);
+  //               List<CityModel> selectedCities =
+  //                   await HelperMethods().getCitiesFromSharedPreferences();
+  //               print(
+  //                   'Selected Cities from SharedPreferences: $selectedCities');
+  //
+  //               Future.delayed(Duration.zero, () {
+  //                 Navigator.pop(context, cities[index]);
+  //                 onCitySelected(cities[index]);
+  //               });
+  //             },
+  //             child: Text(
+  //               cities[index].city,
+  //               style: AppTextStyles.s19w500.copyWith(color: Colors.black),
+  //             ),
+  //           );
+  //         },
+  //         separatorBuilder: (_, index) {
+  //           return Padding(
+  //             padding: const EdgeInsets.symmetric(vertical: 10.0),
+  //             child: Container(
+  //               color: Colors.grey[400],
+  //               height: 1,
+  //             ),
+  //           );
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
+
   Future<CityModel?> openModalBottomSheet(
       BuildContext context,
       List<CityModel> cities,
       void Function(CityModel) onCitySelected,
-      bool isDismissible) async {
+      bool isDismissible,
+      Function() updateCitiesList) async {  // Add this callback parameter
     return await showModalBottomSheet<CityModel>(
       context: context,
       isDismissible: isDismissible,
@@ -74,13 +130,13 @@ class HelperMethods {
               onTap: () async {
                 await saveCityToSharedPreferences(cities[index]);
                 List<CityModel> selectedCities =
-                    await HelperMethods().getCitiesFromSharedPreferences();
-                print(
-                    'Selected Cities from SharedPreferences: $selectedCities');
+                await HelperMethods().getCitiesFromSharedPreferences();
+                print('Selected Cities from SharedPreferences: $selectedCities');
 
                 Future.delayed(Duration.zero, () {
                   Navigator.pop(context, cities[index]);
                   onCitySelected(cities[index]);
+                  updateCitiesList();  // Call the callback function here
                 });
               },
               child: Text(

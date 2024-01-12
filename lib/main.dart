@@ -73,7 +73,7 @@ class _MyAppState extends State<MyApp> {
                 cityName: selectedCity.city)
           ],
         ));
-      }, false);
+      }, false, (){});
     }
   }
 
